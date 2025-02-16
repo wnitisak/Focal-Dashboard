@@ -1,0 +1,30 @@
+.pagination
+    align-items: center
+    .pageButton
+        border: none
+        outline: none
+        background: none
+        cursor: pointer
+        width: 20px
+        height: 20px
+        border-radius: 4px
+        margin: 0 3px
+        &:hover
+            background: #f0f0f0
+        &:disabled
+            opacity: 0.2
+            cursor: auto
+            &:hover
+                background: none
+    .pageInput
+        border: none
+        background: #1C1C1C0D
+        border-radius: 5px
+        outline: none
+        text-align: center
+        padding: 0 5px
+        margin: 0 3px
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button
+            -webkit-appearance: none
+            margin: 0

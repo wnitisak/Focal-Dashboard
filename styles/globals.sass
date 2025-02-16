@@ -1,0 +1,100 @@
+@font-face
+    font-family: 'Iconnic'
+    src: url('../fonts/FC Iconic/FC Iconic Regular.ttf') format('truetype')
+    font-weight: normal
+    font-style: normal
+    unicode-range: U+0E00-0E7F
+
+@font-face
+    font-family: 'Iconnic'
+    src: url('../fonts/FC Iconic/FC Iconic Bold.ttf') format('truetype')
+    font-weight: bold
+    font-style: normal
+    unicode-range: U+0E00-0E7F
+
+@font-face
+    font-family: 'DBGillSiam'
+    src: url('../fonts/DB Gill Siam/DB Gill Siam X v3.2.ttf') format('truetype')
+    font-weight: normal
+    font-style: normal
+
+@font-face
+    font-family: 'DBGillSiam'
+    src: url('../fonts/DB Gill Siam/DB Gill Siam X Bd v3.2.ttf') format('truetype')
+    font-weight: bold
+    font-style: normal
+
+html,body,button,input,select, textarea, h1,h2,p, tspan
+    font-family: 'DBGillSiam', 'Iconnic' !important
+    font-weight: 100
+    color: #090909
+    font-size: 20px
+    @media screen and ( max-width: 650px )
+        font-size: 20px
+tspan
+        font-size: 16px
+h1,h2,p
+    margin: 0 0
+    font-weight: bold
+    line-height: 1.5em
+    // letter-spacing: -0.01em
+h1
+    font-size: 7.8vw
+h2
+    display: flex
+    align-items: center
+    justify-content: center
+    font-size: 2.6vw
+    // font-size: 2.0vw
+@media screen and ( max-width: 550px )
+    h2
+        font-size: 3.5vw
+::-webkit-scrollbar
+    width: 4px !important
+    height: 4px !important
+
+::-webkit-scrollbar-track
+    border-radius: 10px !important
+    background-color: transparent !important
+
+::-webkit-scrollbar-thumb
+    background: #c0c0c0 !important
+    border-radius: 10px !important
+
+*, ::before, ::before
+    box-sizing: border-box
+
+input[type = radio], input[type = checkbox]
+    opacity: 0
+    position: absolute
+    user-select: none
+    pointer-events: none
+
+html
+    position: fixed
+    min-height: 100dvh
+    width: 100%
+    margin: 0
+    overflow: hidden
+    background-position: center
+    background-repeat: no-repeat
+    background-size: cover
+
+body
+    height: 100dvh
+    overflow: hidden
+    width: 100%
+    padding: 0
+    margin: 0
+    touch-action: none
+    -webkit-tap-highlight-color: rgba(238, 231, 231, 0)
+
+div, form
+    display: flex
+    box-sizing: border-box
+
+.invalid
+    background: #ff000011 !important
+    border: 2px solid #ff000022 !important
+    &::placeholder
+        color: #ff000025 !important

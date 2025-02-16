@@ -1,0 +1,46 @@
+{
+  "name": "Focal",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --experimental-https -p 3001",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.635.0",
+    "@aws-sdk/client-sts": "^3.637.0",
+    "@aws-sdk/lib-storage": "^3.637.0",
+    "@aws-sdk/s3-request-presigner": "^3.635.0",
+    "@clerk/nextjs": "^5.4.1",
+    "aws-sdk": "^2.842.0",
+    "axios": "^0.27.2",
+    "dayjs": "^1.11.3",
+    "exceljs": "^4.4.0",
+    "immer": "^9.0.16",
+    "lodash": "^4.17.21",
+    "nanoid": "^5.0.5",
+    "next": "^14.2.5",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-share": "^5.0.3",
+    "recharts": "2.13.0-alpha.5",
+    "sass": "^1.53.0",
+    "swr": "^1.3.0",
+    "ulid": "^2.3.0",
+    "use-immer": "^0.8.0"
+  },
+  "devDependenciEes": {
+    "@types/node": "^17.0.35",
+    "@types/react": "^18.0.9",
+    "@types/react-dom": "^18.0.5",
+    "typescript": "^4.7.4"
+  },
+  "devDependencies": {
+    "@types/node": "18.11.9",
+    "@types/react": "18.0.25",
+    "@types/webpack-env": "^1.18.1",
+    "raw-loader": "^4.0.2",
+    "typescript": "4.8.4"
+  }
+}

@@ -1,0 +1,148 @@
+.container
+    flex-direction: column
+    position: relative
+    width: 100%
+    .title
+        font-size: 0.9rem
+        font-weight: 200
+        height: 30px
+    .input
+        height: 100%
+        text-align: start
+        width: 100%
+        border: none
+        outline: none
+        font-size: 0.8rem
+        border-radius: 7px
+        border: 1px solid #D0D0D0
+        box-shadow: 1px 1px 1.5px 1px #00000011
+        transition: 0.1s all linear
+        background-color: #ffffff
+        &::placeholder
+            font-size: 0.9rem
+            color: #09090966
+    input
+        font-size: 0.8rem !important
+    .icon
+        display: none
+    select
+        text-align: start
+        -webkit-appearance: none
+        -moz-appearance: none
+        appearance: none
+        position: relative
+        padding-right: 25px !important
+        ~.icon
+            display: block
+            position: absolute
+            color: #888888
+            right: 10px
+            font-size: 15px
+            z-index: 10
+        &:invalid
+            font-size: 0.8rem
+            color: #09090966
+    input[type=file]
+        opacity: 0
+        position: absolute
+    input[type = date], input[type = time]
+        height: 25px
+        -webkit-appearance: none
+        appearance: none
+        -moz-appearance: none
+        outline: none !important
+        width: 100%
+        position: relative
+        padding-right: 30px !important
+        ~.icon
+            display: block
+            position: absolute
+            color: #666666
+            right: 12px
+            font-size: 15px
+            z-index: 10
+        &::-webkit-calendar-picker-indicator,
+        &::-webkit-inner-spin-button,
+        &::-webkit-clear-button
+            opacity: 0
+            margin: 0
+            position: absolute
+            top: 0
+            left: 0px
+            width: 100%
+            height: 100%
+            z-index: 1
+            cursor: pointer
+        &:focus, &:valid
+            z-index: 1
+            color: #444444
+    input[type = radio]
+        &:checked
+            ~label
+                &::before
+                    border: 3px solid #0F865E
+                &::after
+                    opacity: 1
+                    transform: translate(-50%,-50%) scale(1)
+                    // transition: transform .05s ease-in
+
+        ~label
+            -webkit-tap-highlight-color: rgba(238, 231, 231, 0)
+            user-select: none
+            font-size: 0.95rem
+            cursor: pointer
+            color: #444
+            display: inline-block
+            padding-left: 25px
+            position: relative
+            text-align: start
+            width: 100%
+            &::before
+                transition: all 0.1s ease-in-out
+                content: ""
+                position: absolute
+                left: 10px
+                top: 50%
+                transform: translate(-50%,-50%)
+                width: 17px
+                height: 17px
+                border: 2px solid #B2B1B1
+                border-radius: 50%
+            &::after
+                transition: all 0.1s ease-in-out
+                content: ""
+                position: absolute
+                left: 10px
+                top: 50%
+                opacity: 0
+                transform: translate(-50%,-50%) scale(1)
+                width: 8px
+                height: 8px
+                border-radius: 50%
+                background-color: #0F865E
+    .inputFile
+        width: 100%
+        height: 220px
+        border: 1px dashed #5A9EE0
+        box-shadow: 0px 4px 4px 0px #00000011
+        background: #F3F7FE
+        border-radius: 8px
+        display: flex
+        justify-content: center
+        align-items: center
+        flex-direction: column
+        cursor: pointer
+        &:hover
+            background-color: #f8fbff
+        .icon
+            width: 35px
+        .previewImage
+            max-width: 100%
+            max-height: 100%
+        p
+            margin: 0
+            color: #c4c4c4
+            font-weight: 100
+            span
+                text-decoration: underline
+                color: #666666

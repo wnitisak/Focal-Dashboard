@@ -1,0 +1,77 @@
+.table
+    flex: 1 1
+    flex-direction: column
+    align-items: flex-start
+    position: relative
+    .row
+        border-radius: 5px
+        width: 100%
+        color: #555
+        align-items: center
+        padding: 0 4px 0 0
+        overflow: hidden
+    .header
+        border-radius: 5px
+        width: 100%
+        padding: 5px 20px 5px 10px
+        background: #eaeaf5
+        overflow: hidden
+        justify-content: flex-start
+        align-items: center
+        .item
+            color: #777
+            display: flex
+            margin: 0 0 0 3px
+            &:first-child
+                margin: 0 0 0 0
+    .items
+        width: 100%
+        align-items: center
+        background: #ffffff
+        flex-direction: column
+        overflow: hidden
+        overflow-y: scroll
+        -webkit-overflow-scrolling: touch
+        margin: 3px 0 0
+        padding: 0
+        // user-select: none
+        .tableItemWrap
+            width: 100%
+            flex-direction: column
+            &:nth-child(odd)
+                background: #f5f5f5
+        .tableItem
+            padding: 6px 20px 6px 10px
+            width: 100%
+            align-items: center
+            position: relative
+            // border-radius: 3px
+            // border-bottom: 1px solid #ddddddc2
+            .item
+                height: 100%
+                margin: 0 0 0 3px
+                &:first-child
+                    margin: 0 0 0 0
+            input
+                background: #e4e4e480
+                border: none
+            .deleteIcon
+                position: absolute
+                right: 3px
+                color: #576af5
+                cursor: pointer
+                font-size: 14px
+        .isEnableHover
+            user-select: none
+            &:hover
+                background: #e4e4e4
+                cursor: pointer
+    .addButton
+        color: #576af5
+        text-decoration: underline
+        margin: 5px 0 0 5px
+        cursor: pointer
+        user-select: none
+    .addButton.disabled
+        color: #ccc
+        cursor: auto

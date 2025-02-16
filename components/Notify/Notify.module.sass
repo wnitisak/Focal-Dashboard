@@ -1,0 +1,31 @@
+.notify
+    position: fixed
+    width: auto
+    flex-shrink: 0
+    top: 20px
+    right: 20px
+    justify-content: center
+    color: #FFF
+    align-items: flex-start
+    font-size: 0.9rem
+    padding: 8px 15px
+    border-radius: 25px
+    transition: transform 0.4s
+    transform: translateX(200%)
+    box-shadow: 0 1px 2px 1px #49494928
+    flex-direction: column
+    z-index: 999888
+    &.error
+        background: #d92e36
+    &.success
+        background: #29b680
+    span
+        flex-wrap: nowrap
+    i,span
+        flex-shrink: 0
+        text-align: start
+        white-space: pre-line
+    i
+        font-size: 18px
+        margin-right: 10px
+        color: #FFF

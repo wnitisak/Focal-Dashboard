@@ -1,0 +1,49 @@
+@keyframes slideDown
+    0%
+        transform: translateY(-10px)
+        opacity: 0
+
+.overlayContainer
+    position: fixed
+    right: 0
+    top: 0
+    z-index: 1000
+    width: 100vw
+    height: 100dvh
+    .itemContainer
+        position: fixed
+        background: #ffffff
+        padding: 5px
+        border-radius: 5px
+        width: 80px
+        min-width: fit-content
+        max-width: 100%
+        min-height: 35px
+        overflow-y: auto
+        overflow-x: hidden
+        box-shadow: 0 0 12px #00000025
+        animation: slideDown 0.1s forwards
+        flex-direction: column
+        box-sizing: border-box
+.buttonContainer
+    flex: 1 1
+    &.disabled
+        pointer-events: none
+        cursor: auto
+.mainContainer
+    position: absolute
+    top: 0
+    left: 0
+    z-index: -1
+    width: 100%
+    height: 100%
+    .input
+        display: none
+        position: absolute
+        opacity: 0
+        user-select: none
+        width: 100%
+        height: 100%
+        z-index: 1
+    .input::-webkit-file-upload-button
+        visibility: hidden

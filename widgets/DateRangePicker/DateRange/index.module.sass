@@ -1,0 +1,149 @@
+@keyframes active
+    0%
+        transform: scale(1)
+    50%
+        transform: scale(1.2)
+    100%
+        transform: scale(1)
+
+.container
+    flex-direction: column
+    z-index: 99
+    max-width: 100%
+    // overflow: hidden
+    box-shadow: 0 4px 10px 0 rgb(0 0 0 / 15%)
+    overflow-x: auto
+    border-radius: 8px
+    .date_picker
+        background: #FFF
+        align-self: flex-start
+        span
+            font-size: 0.9rem
+        &.borderless
+            box-shadow: none
+        .calendar
+            width: 275px
+            flex-direction: column
+            padding: 10px 10px
+            align-self: flex-start
+            user-select: none
+            .month
+                width: 100%
+                position: relative
+                align-items: center
+                span
+                    font-size: 1rem
+                    width: 100%
+                    cursor: default
+                    text-align: center
+                i
+                    position: absolute
+                    cursor: pointer
+                    color: #0F865E
+                    font-size: 15px
+                    display: none
+                    &.show
+                        display: block
+                    &:last-child
+                        right: 0
+            .days
+                span
+                    width: 35px
+                    height: 35px
+                    color: #aaa
+                    display: flex
+                    align-items: center
+                    justify-content: center
+                    cursor: default
+            .numbers
+                flex-wrap: wrap
+                width: 245px
+                .number
+                    position: relative
+                    cursor: pointer
+                    text-align: center
+                    color: #555
+                    flex-shrink: 0
+                    width: 35px
+                    height: 35px
+                    margin: 1px 0
+                    &.active
+                        span
+                            animation: active 0.2s forwards
+                            background: #0F865E !important
+                            color: #FFF !important
+                            border-radius: 50%
+                    &.active_pre
+                        span
+                            background: #0F865E !important
+                            color: #FFF !important
+                            border-radius: 50%
+                    &.padding
+                        pointer-events: none
+                        color: #ccc
+                    &:hover,&.fade
+                        background: #0f865e2c
+                        span
+                            color: #FFF
+                    &.fade
+                        border-radius: 0 !important
+                        span
+                    &:hover
+                        border-radius: 50%
+                        span
+                    &.isDay
+                        span
+                            box-shadow: inset 0 0 0 1px #0F865E
+                            // border: 1px solid #f27314
+                            border-radius: 50% !important
+                    &.end
+                        border-radius: 0
+                        background: linear-gradient(90deg,#0f865e2c,50%,transparent 50%) !important
+                    &.start
+                        border-radius: 0
+                        background: linear-gradient(90deg,transparent,50%,#0f865e2c 50%) !important
+                    span
+                        width: 35px
+                        height: 35px
+                        flex-shrink: 0
+                        display: flex
+                        align-items: center
+                        justify-content: center
+        .dateRangeSelector
+            overflow: auto
+            -webkit-overflow-scrolling: touch
+            max-height: 280px
+            margin: 10px 0
+            padding: 0 10px
+            flex-direction: column
+            border-left: 1px solid #e4e4e4
+            .button
+                cursor: pointer
+                width: 90px
+                padding: 3px 5px
+                border-radius: 5px
+                margin: 0 0 2px
+                &:hover
+                    background-color: #5769f515
+            .button.active
+                background-color: #5769f515
+        @media screen and ( max-width: 650px  )
+            width: 366px
+            .dateRangeSelector
+                padding: 0 5px
+            .calendarRight
+                display: none
+            .arrow
+                display: block !important
+            &.hiddenSelector
+                width: auto
+                .calendarRight
+                    display: flex
+
+        @media screen and ( max-width: 545px  )
+            .calendarRight
+                display: none !important
+            &.hiddenSelector
+                width: 285px !important
+                .calendar
+                    padding: 10px 20px
