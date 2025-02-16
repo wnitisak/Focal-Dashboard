@@ -110,7 +110,7 @@ const HorizontalBarChart = ({ limit, yAxisWidth, title, label, dataHandler, body
                         dataKey="value"
                         barSize={25}
                         radius={[6, 6, 6, 6]}
-                        fill={'#0F865E'}
+                        fill={'#0C2756'}
                         label={{
                             position: 'top',
                             fill: '#888888',

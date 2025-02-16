@@ -34,7 +34,7 @@ const Chart = ({ loading = false, children, title = null, hideHeader = false, de
                         {timeframes?.length > 0 &&
                             <div style={{ alignItems: 'center' }}>
                                 {(timeframe === 'custom' && rangeDate?.length > 0) &&
-                                    <span style={{ fontSize: '1rem', paddingRight: '5px', color: '#0F865E' }}>
+                                    <span style={{ fontSize: '1rem', paddingRight: '5px', color: '#0C2756' }}>
                                         {`${dayjs(rangeDate[0]).format('DD/MM/YYYY')} - ${dayjs(rangeDate[1]).format('DD/MM/YYYY')}`}
                                     </span>
                                 }

@@ -33,8 +33,8 @@ export const Layout = ({ children }) => {
                         >
                             <i aria-hidden className={`fa-solid fa-bars ${styles.navButton}`} onClick={e => { navBar[1](true) }}></i>
                             <ul className={`${styles.navBars} ${navBar[0] ? styles.show : styles.hide}`}>
-                                <img src="/logo.jpg" />
-                                <li className={router.asPath.includes('/dashboard') ? styles.active : ''}
+                                <img src="/focal_logo.png" />
+                                {/* <li className={router.asPath.includes('/dashboard') ? styles.active : ''}
                                     onClick={(e) => {
                                         e.stopPropagation()
                                         router.push('/dashboard')
@@ -42,7 +42,7 @@ export const Layout = ({ children }) => {
                                     }}>
                                     <i aria-hidden className="fa-solid fa-chart-line"></i>
                                     Dashboard
-                                </li>
+                                </li> */}
                                 <li className={router.asPath.includes('/list') ? styles.active : ''}
                                     onClick={(e) => {
                                         e.stopPropagation()
