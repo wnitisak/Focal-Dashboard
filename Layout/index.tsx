@@ -50,7 +50,7 @@ export const Layout = ({ children }) => {
                                         if (navBar[0]) navBar[1](false)
                                     }}>
                                     <i aria-hidden className="fa-solid fa-list"></i>
-                                    Submission List
+                                    Register List
                                 </li>
                             </ul>
                             <div className={styles.component}>
