@@ -52,6 +52,20 @@ export const Layout = ({ children }) => {
                                     <i aria-hidden className="fa-solid fa-list"></i>
                                     Register List
                                 </li>
+                                <Protect
+                                    permission="org:management:allow"
+                                    fallback={null}
+                                >
+                                    <li className={router.asPath.includes('/users') ? styles.active : ''}
+                                        onClick={(e) => {
+                                            e.stopPropagation()
+                                            router.push('/users')
+                                            if (navBar[0]) navBar[1](false)
+                                        }}>
+                                        <i aria-hidden className="fa-solid fa-users"></i>
+                                        User Management
+                                    </li>
+                                </Protect >
                             </ul>
                             <div className={styles.component}>
                                 {children}
@@ -70,6 +84,6 @@ export const Layout = ({ children }) => {
                     {children}
                 </div>
             }
-        </div>
+        </div >
     )
 }
