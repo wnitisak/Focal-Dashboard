@@ -3,6 +3,7 @@ import styles from './Field.module.sass'
 
 interface props extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
     title?: string
+    titleAlert?: string
     items?: string[]
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
@@ -12,17 +13,18 @@ const Field = (props: props) => {
 
     return (
         <div className={`${styles.container} ${props.className ?? ''}`} style={props?.style || {}}>
-            {props?.title && <p className={styles.title}>{props?.title}{props?.required ? <span style={{ color: '#BD1212' }}> *</span> : null}</p>}
+            {props?.title && <p className={styles.title}>{props?.title}{(props?.required && !props?.disabled) ? <span style={{ color: '#BD1212' }}> *</span> : null}</p>}
             {props?.type === 'select' ?
                 <div style={{ alignItems: 'center', flex: '1 1', width: '100%' }}>
                     <select
-                        id={props?.id}
+                        id={props?.name}
                         name={props?.name}
                         required
                         items
                         {...props as any}
                         style={{}}
                         className={styles.input}
+                        defaultValue={''}
                     >
                         {props.placeholder && <option value="" hidden style={{ fontSize: '0.9rem', color: '#09090966' }}>{props.placeholder}</option>}
                         {(props?.items || []).map(i => (

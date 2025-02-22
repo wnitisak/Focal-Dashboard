@@ -1,0 +1,114 @@
+@keyframes scale
+    0%
+        transform: scale(0.9)
+        opacity: 0.5
+    40%
+        opacity: 1
+    45%
+        transform: scale(1.03)
+    100%
+        transform: scale(1)
+
+@keyframes scale-close
+    0%
+        transform: scale(1)
+    40%
+        transform: scale(1.03)
+    45%
+        opacity: 1
+    100%
+        transform: scale(0.9)
+        opacity: 0
+
+@keyframes slideDown
+    0%
+        transform: translate(0,-60px)
+        opacity: 0
+    100%
+        transform: translate(0,0)
+        opacity: 1
+
+@keyframes slideUp
+    0%
+        transform: translate(0,0)
+        opacity: 1
+    100%
+        transform: translate(0,-60px)
+        opacity: 0
+
+@keyframes rotating
+    0%
+        transform: rotate(0deg)
+    100%
+        transform: rotate(360deg)
+
+.bg
+    z-index: 99
+    position: absolute
+    width: 100%
+    height: 100%
+    justify-content: center
+    align-items: center
+    background: #000000b5
+    transition: all 0.15s ease-in-out
+
+.contentWrap
+    z-index: 99
+    position: absolute
+    width: 10px !important
+    height: 10px !important
+    top: 50%
+    left: 50%
+    // box-shadow: 0px 0px 100px #a0a0a0
+    transform: translate(-5px, -5px)
+    align-items: center
+    justify-content: center
+    overflow: visible
+    .content
+        position: absolute
+        align-items: center
+        flex-direction: column
+        overflow: hidden
+        padding: 10px
+        border-radius: 15px
+        background-color: #010101
+        max-width: 95vw
+        max-height: 95dvh
+    .closeButton
+        position: absolute
+        top: 8px
+        right: 8px
+        display: flex
+        flex: 0 0 18px
+        width: 18px
+        justify-content: center
+        align-items: center
+        cursor: pointer
+    .children
+        width: 100%
+        height: 100%
+        -webkit-overflow-scrolling: touch
+        overflow-y: scroll
+// .content.show
+//     animation: scale-open 0.3s forwards
+//     &.slide
+//         animation: slideDown .3s forwards
+// .content.hidden
+//     animation: scale-close 0.3s forwards
+//     &.slide
+//         animation: slideUp 0.3s forwards
+//         // visibility: hidden
+
+.content.show
+    animation: scale 0.3s
+    transform: scale(1)
+    &.slide
+        opacity: 1
+        animation: slideDown .3s
+.content.hidden
+    transform: scale(0)
+    &.slide
+        opacity: 0
+        transition: all 0.3s
+        visibility: hidden
+        transform: translate(0,60px)

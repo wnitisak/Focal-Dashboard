@@ -1,0 +1,131 @@
+@keyframes fade-inx
+    0%
+        opacity: 0
+    100%
+        opacity: 1
+@keyframes fade-out
+    0%
+        opacity: 1
+    100%
+        opacity: 0
+@keyframes dialog-open
+    to
+        transform: translateY(0)
+@keyframes dialog-close
+    from
+        transform: translateY(0)
+    to
+        transform: translateY(-100px)
+
+.overlayContainer
+    position: fixed
+    right: 0
+    top: 0
+    z-index: 99
+    width: 100vw
+    height: 100dvh
+    overflow: hidden
+    background: #00000060
+    animation: fade-inx .3s forwards
+    justify-content: center
+    align-items: center
+    &.not_active
+        animation: fade-out .3s forwards
+    .contentContainer
+        // position: fixed
+        background: #010101
+        padding: 10px
+        border-radius: 10px
+        width: 80px
+        min-width: fit-content
+        max-width: 90dvw
+        min-height: 35px
+        max-height: 95dvh
+        overflow: hidden
+        box-shadow: 0 0px 10px 0 #ffffff33
+        animation: slideDown 0.1s forwards
+        flex-direction: column
+        box-sizing: border-box
+        transform: translateY(-100px)
+        animation: dialog-open .2s forwards
+        &.not_active
+            animation: dialog-close .2s forwards
+        i
+            font-size: 20px
+            color: #010101
+.content
+    max-width: 90dvw
+    width: 400px
+    max-height: 90dvh
+    overflow: auto
+    overflow-x: hidden
+    flex-direction: column
+    -webkit-overflow-scrolling: auto
+    position: relative
+    display: flex
+    flex-direction: column
+    justify-content: flex-start
+    align-content: flex-start
+    align-items: center
+    border-radius: 8px
+    padding: 5px 20px 20px
+    .fields
+        justify-content: center
+        align-items: center
+        flex-wrap: wrap
+        margin: 10px 0 10px
+        width: 100%
+        .input
+            margin: 7px 10px
+            height: auto
+            flex: 1 1 45%
+            min-width: 250px
+            border-radius: 30px
+            align-self: end
+            input, select
+                height: 40px
+                text-align: start
+                border-radius: 30px
+                padding: 0 15px
+            &.time
+                width: 100px
+                max-width: 100px
+                min-width: 0px
+                padding: 0 3px
+                margin-left: 5px
+                input
+                    text-align: center
+    .buttons
+        padding: 10px 0
+    .button
+        cursor: pointer
+        font-size: 1.5rem
+        height: 50px
+        // width: 270px
+        min-width: 100px
+        max-width: 95%
+        border: none
+        outline: none
+        border-radius: 28px
+        color: #35FEAC
+        text-transform: uppercase
+        padding: 5px 20px
+        border: 2px solid #ffffff
+        background: #010101
+        &:active
+            transform: scale(0.98)
+        &:hover
+            background: #171717
+        &.highlight
+            background: #35FEAC
+            color: #010101
+            border: 2px solid #35FEAC
+            &:hover
+                background: #44eba9
+                color: #010101
+        &.cancel
+            background: #ffffff
+            color: #010101
+            &:hover
+                background: #f0f0f0
+                color: #010101

@@ -2,6 +2,8 @@
 
 import DropdownWrap from "components/DropdownWrap"
 import FieldEditor from "components/FieldEditor"
+import ModalQRScanner from "components/ModalQRScanner"
+import ModalUser from "components/ModalUser"
 import SearchInput from "components/SearchInput"
 import AppContext from "contexts/App.context"
 import dayjs from "dayjs"
@@ -20,7 +22,7 @@ const Notification = () => {
 
 
     const tableRef = useRef<any>()
-    const currentImageUrl = useState<any>(undefined)
+    const modalScanner = useState<any>(undefined)
 
     const [sorting, setSorting] = useState([])
     const totalPage = useState(0)
@@ -150,9 +152,23 @@ const Notification = () => {
             setItems(curr => curr.map(i => i.code === code ? ({ ...i, ...value }) : i))
         }
     }
+    const modalUserRef = useRef<any>()
+
+    const searchHandler = async (code) => {
+        // console.log(await api(`/api/utils/registrations`, {
+        //     code: atob(code)
+        // }))
+        let data = totalItems[0].find(i => i.code === atob(code))
+        if (!modalUserRef.current?.getActive()) modalUserRef.current?.open(data)
+    }
 
     return (
         <div className={styles.container}>
+            <ModalUser ref={modalUserRef} />
+            <ModalQRScanner
+                show={modalScanner}
+                searchHandler={e => { searchHandler(e) }}
+            />
             <div style={{ alignItems: 'center', justifyContent: 'space-between', paddingTop: '10px' }}>
                 <div style={{ alignItems: 'center' }}>
                     <p className={styles.title}>
@@ -160,13 +176,10 @@ const Notification = () => {
                     </p>
                     <span style={{ paddingLeft: '10px', minWidth: 'fit-content', color: '#aaaaaa' }}>({totalHits[0] ? totalHits[0]?.toLocaleString(undefined) : '-'} รายการ)</span>
                 </div>
-                <button className={styles.exportButton} onClick={exportHandler}>
-                    <i className="fa-solid fa-download"></i>
-                    Export
-                </button>
+
             </div>
             <div className={styles.content}>
-                <div style={{ width: '100%' }}>
+                <div style={{ width: '100%', justifyContent: 'space-between', alignItems: 'center' }}>
                     <SearchInput
                         className={styles.searchInput}
                         placeholder='Search'
@@ -178,26 +191,38 @@ const Notification = () => {
                         }}
                         defaultValue={''}
                     />
+                    <div>
+                        <button className={styles.exportButton} onClick={exportHandler} style={{ marginLeft: '10px' }}>
+                            <i className="fa-solid fa-download"></i>
+                            Export
+                        </button>
+                        <button className={styles.exportButton} onClick={e => { modalScanner[1](true) }} style={{ marginLeft: '10px' }}>
+                            <i className="fa-solid fa-qrcode"></i>
+                            Scan Ticket
+                        </button>
+                    </div>
                 </div>
-                <div className={styles.filter}>
-                    <span style={{ color: '#ffffff', fontSize: '0.8rem' }}>Register Date</span>
-                    <DateRangePicker
-                        ref={orderDatePickerRef}
-                        rangeDate={rangeDate}
-                        style={{ height: '100%', marginLeft: '5px' }}
-                        onChange={value => {
-                            let range = value.map(i => i.valueOf())
-                            if (range.every((date, index) => date === rangeDate[index]?.valueOf())) return
-                            pageMap[1]({})
-                            setFilter(draft => {
-                                draft.page = 1
-                                draft.startDate = range[0].valueOf()
-                                draft.endDate = range[1].valueOf()
-                            })
-                            orderDatePickerRef.current?.close()
-                        }}
-                        setRangeDate={setRangeDate}
-                    />
+                <div className={styles.filter} style={{ flexWrap: 'wrap' }}>
+                    <div style={{ alignItems: 'center' }}>
+                        <span style={{ color: '#ffffff', fontSize: '0.8rem' }}>Register Date</span>
+                        <DateRangePicker
+                            ref={orderDatePickerRef}
+                            rangeDate={rangeDate}
+                            style={{ marginLeft: '5px' }}
+                            onChange={value => {
+                                let range = value.map(i => i.valueOf())
+                                if (range.every((date, index) => date === rangeDate[index]?.valueOf())) return
+                                pageMap[1]({})
+                                setFilter(draft => {
+                                    draft.page = 1
+                                    draft.startDate = range[0].valueOf()
+                                    draft.endDate = range[1].valueOf()
+                                })
+                                orderDatePickerRef.current?.close()
+                            }}
+                            setRangeDate={setRangeDate}
+                        />
+                    </div>
                     <span style={{ color: '#ffffff', marginLeft: '20px', fontSize: '0.8rem' }}>Status</span>
                     <Selector
                         className={styles.selector}
@@ -217,53 +242,56 @@ const Notification = () => {
                             })
                         }}
                     />
+
                     {(filter.status !== 'all' || filter.startDate || filter.endDate) &&
-                        <span style={{ color: '#ffffff', marginLeft: '20px', fontSize: '0.85rem', textDecoration: 'underline', cursor: 'pointer' }} onClick={clearFilter}>ล้างตัวกรอง</span>
+                        <span style={{ color: '#dddddd', marginLeft: '20px', fontSize: '0.8rem', textDecoration: 'underline', cursor: 'pointer' }} onClick={clearFilter}>Clear filter</span>
                     }
                     <div style={{ flex: '1 1' }} />
-                    <span style={{ color: '#888888', fontSize: '0.8rem' }}>{selectedItems.length || 0} of {items.length} selected</span>
-                    <div>
-                        <DropdownWrap
-                            button={(
-                                <button
-                                    className={styles.searchButton}
-                                    disabled={selectedItems.length === 0}
-                                    style={{ color: '#35FEAC' }}
-                                >
-                                    Action
-                                </button>
-                            )}
-                            items={[
-                                { value: 'APPROVED', detail: { alias: 'Approved' } },
-                                { value: 'REJECTED', detail: { alias: 'Rejected' } },
-                                { value: 'REVIEW', detail: { alias: 'REVIEW' } },
-                                { value: 'PENDING', detail: { alias: 'PENDING' } }
-                            ]}
-                            itemHeight={30}
-                            onClick={async (detail, value, e) => {
-                                let _items = selectedItems?.map(i => ({ code: i, status: value }))
-                                pageLoading[1](true)
-                                let responses = await Promise.all(_items.map(async i => {
-                                    return await api(`/api/utils/registrations`, {
-                                        ...i
-                                    }, 'patch')
-                                }))
-                                pageLoading[1](false)
-                                notify.push(responses.every(res => res.resCode === '200') ? 'อัพเดทสถานะสำเร็จ' : 'อัพเดทสถานะไม่สำเร็จ', responses.every(res => res.resCode === '200') ? 'success' : 'error')
-                                if (responses.every(res => res.resCode === '200')) {
-                                    setItems(curr => curr.map(i => selectedItems.includes(i.code) ? ({ ...i, status: value }) : i))
-                                    tableRef.current?.clearCheckbox()
-                                }
-                            }}
-                            itemWidth={100}
-                            align='end'
-                        >
-                            {(detail, value) => (
-                                <div className={styles.actionButton}>
-                                    <span>{detail.alias}</span>
-                                </div>
-                            )}
-                        </DropdownWrap>
+                    <div style={{ alignItems: 'center' }}>
+                        <span style={{ color: '#888888', fontSize: '0.8rem' }}>{selectedItems.length || 0} of {items.length} selected</span>
+                        <div>
+                            <DropdownWrap
+                                button={(
+                                    <button
+                                        className={styles.searchButton}
+                                        disabled={selectedItems.length === 0}
+                                        style={{ color: '#35FEAC' }}
+                                    >
+                                        Action
+                                    </button>
+                                )}
+                                items={[
+                                    { value: 'APPROVED', detail: { alias: 'Approved' } },
+                                    { value: 'REJECTED', detail: { alias: 'Rejected' } },
+                                    { value: 'REVIEW', detail: { alias: 'REVIEW' } },
+                                    { value: 'PENDING', detail: { alias: 'PENDING' } }
+                                ]}
+                                itemHeight={30}
+                                onClick={async (detail, value, e) => {
+                                    let _items = selectedItems?.map(i => ({ code: i, status: value }))
+                                    pageLoading[1](true)
+                                    let responses = await Promise.all(_items.map(async i => {
+                                        return await api(`/api/utils/registrations`, {
+                                            ...i
+                                        }, 'patch')
+                                    }))
+                                    pageLoading[1](false)
+                                    notify.push(responses.every(res => res.resCode === '200') ? 'อัพเดทสถานะสำเร็จ' : 'อัพเดทสถานะไม่สำเร็จ', responses.every(res => res.resCode === '200') ? 'success' : 'error')
+                                    if (responses.every(res => res.resCode === '200')) {
+                                        setItems(curr => curr.map(i => selectedItems.includes(i.code) ? ({ ...i, status: value }) : i))
+                                        tableRef.current?.clearCheckbox()
+                                    }
+                                }}
+                                itemWidth={100}
+                                align='end'
+                            >
+                                {(detail, value) => (
+                                    <div className={styles.actionButton}>
+                                        <span>{detail.alias}</span>
+                                    </div>
+                                )}
+                            </DropdownWrap>
+                        </div>
                     </div>
                 </div>
                 <div style={{ flex: '1 1', overflow: 'hidden' }}>
@@ -271,7 +299,7 @@ const Notification = () => {
                         <div style={{ overflow: 'hidden', overflowX: 'auto', flex: '1 1' }}>
                             <Table
                                 className={styles.table}
-                                minWidth="1000px"
+                                minWidth="1300px"
                                 ref={tableRef}
                                 id={'table'}
                                 data={[items, null]}
@@ -386,12 +414,6 @@ const Notification = () => {
                             />
                         </div>
                     </div>
-                    {currentImageUrl[0] &&
-                        <div className={`${styles.image}`}>
-                            <i aria-hidden className="fa-solid fa-circle-xmark" onClick={e => { currentImageUrl[1](undefined) }}></i>
-                            <img src={currentImageUrl[0]?.url} />
-                        </div>
-                    }
                 </div>
             </div>
         </div >
