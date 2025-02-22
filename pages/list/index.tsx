@@ -6,7 +6,7 @@ import SearchInput from "components/SearchInput"
 import AppContext from "contexts/App.context"
 import dayjs from "dayjs"
 import { useRouter } from "next/router"
-import { useContext, useEffect, useMemo, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import { useImmer } from "use-immer"
 import { api } from "utils/general"
 import DateRangePicker from "widgets/DateRangePicker"
@@ -21,20 +21,17 @@ const Notification = () => {
 
     const tableRef = useRef<any>()
     const currentImageUrl = useState<any>(undefined)
-    const submitDatePickerRef = useRef<any>()
-    const [submitRangeDate, setSubmitRangeDate] = useState<dayjs.Dayjs[]>([])
 
     const [sorting, setSorting] = useState([])
-    const [sortingLabel, setSortingLabel] = useState('')
     const totalPage = useState(0)
     const totalHits = useState(0)
-
+    const totalItems = useState([])
     const router = useRouter()
 
     const orderDatePickerRef = useRef<any>()
     const [rangeDate, setRangeDate] = useState<dayjs.Dayjs[]>([])
 
-    const { loading: pageLoading, s3Client, notify: { current: notify } } = useContext(AppContext)
+    const { loading: pageLoading, notify: { current: notify } } = useContext(AppContext)
 
     const [loading, setLoading] = useState<boolean>(false)
     const [selectedItems, setSelectedItems] = useState<any[]>([])
@@ -50,63 +47,42 @@ const Notification = () => {
 
     const pageMap = useState<any>({})
 
-    const meiliEnabled = useMemo(() => true || textSearch || sorting.length > 0 || filter.status !== 'all' || filter.startDate || filter.endDate, [filter, sorting, textSearch])
-
-    const getList = async ({ status, page, channel, orderStartDate, orderEndDate, submitStartDate, submitEndDate, sorting }: any) => {
-        tableRef.current?.clearCheckbox()
-        setLoading(true)
-        let res
-        let pages = 0
-        let hits = 0
-        if (!meiliEnabled) {
-            hits = await api(`/api/search`, { limit: 0 }).then(_ => _?.estimatedTotalHits || 0)
-            pages = Math.ceil(hits / 100)
-            let _res = await api(`/api/utils/redeem/list?${new URLSearchParams({
-                limit: '100',
-                ...(pageMap[0]?.[page] ? { start: pageMap[0]?.[page] } : {}),
-            }).toString()}`)
-            res = _res?.data || []
-            pageMap[1](curr => ({ ...curr, [`${page + 1}`]: _res?.next }))
-        } else {
-            let _items = await api(`/api/search`, {
-                page,
-                hitsPerPage: 100,
-                q: textSearch || '',
-                filter: [
-                    ...((status && status !== 'all') ? [`status = ${status}`] : []),
-                    ...((channel) ? [`channel = \"${channel}\"`] : []),
-                    ...(orderStartDate ? [`purchasedTimestamp ${orderStartDate} TO ${orderEndDate}`] : []),
-                    ...(submitStartDate ? [`timestamp ${submitStartDate} TO ${submitEndDate}`] : []),
-                ],
-                sort: sorting ? [sorting] : []
-            }, 'post')
-            hits = _items?.totalHits || 0
-            pages = _items?.totalPages
-            res = _items?.hits || []
-        }
-        if (filter.page > pages) setFilter(draft => { draft.page = pages })
-        totalHits[1](hits)
-        totalPage[1](pages)
-        setItems(res || [])
-        setSelectedItems([])
-        setLoading(false)
-    }
-
     useEffect(() => {
         router.replace({ pathname: '/list', query: { page: filter.page || 1 } });
         (async () => {
             setItems([])
-            let res = await getList(filter)
+            setLoading(true)
+            let itemPerPage = 20
+            let _res = await api(`/api/utils/registrations`)
+            totalItems[1](_res?.data || [])
+            let _items = _res?.data || []
+            _items = _items.filter(i => filter.status === 'all' || i.status === filter.status.toUpperCase())
+            _items = _items.filter(i => !filter.startDate || (i.timestamp >= filter.startDate && i.timestamp <= filter.endDate))
+            _items = _items.filter(i => !textSearch || Object.values(i).some(v => v?.toString().toLowerCase().includes(textSearch.toLowerCase())))
+            _items = _items.sort((a, b) => {
+                let sorting = filter?.sorting || 'timestamp:desc'
+                let [key, order] = sorting.split(':')
+                if (a[key] < b[key]) return order === 'asc' ? -1 : 1
+                if (a[key] > b[key]) return order === 'asc' ? 1 : -1
+                return 0
+            })
+            setLoading(false)
+            setItems(_items.slice((filter.page - 1) * itemPerPage, filter.page * itemPerPage))
+            totalHits[1](_items.length)
+            let pages = Math.ceil(_items.length / itemPerPage)
+            totalPage[1](pages)
+            if (filter.page > pages) setFilter(draft => { draft.page = pages })
         })()
     }, [filter, textSearch])
 
     const clearFilter = () => {
         setRangeDate([])
         setSorting([])
-        setSortingLabel('')
         tableRef?.current?.clearSort()
         setFilter(draft => {
             draft.status = 'all'
+            draft.startDate = null
+            draft.endDate = null
             draft.sorting = null
             draft.page = 1
         })
@@ -116,21 +92,17 @@ const Notification = () => {
     const exportHandler = async () => {
         let items = []
         pageLoading[1](true)
-        let res = await api(`/api/search`, {
-            page: 1,
-            q: textSearch || '',
-            hitsPerPage: 10000,
-            filter: [
-                ...((filter.status && filter.status !== 'all') ? [`status = ${filter.status}`] : [])
-            ],
-            sort: filter.sorting ? [filter.sorting] : []
-        }, 'post')
-        items = res?.hits || []
+        let _res = await api(`/api/utils/registrations`)
+        items = _res?.data || []
+        items = items.filter(i => filter.status === 'all' || i.status === filter.status.toUpperCase())
+        items = items.filter(i => !filter.startDate || (i.timestamp >= filter.startDate && i.timestamp <= filter.endDate))
         const ExcelJs = require('exceljs')
         let newWorkbook = new ExcelJs.Workbook();
         let newWorksheet = newWorkbook.addWorksheet("Sheet1");
         newWorksheet.addRow([
             'Register Date',
+            'Code',
+            'Company',
             'First name',
             'Last name',
             'Email',
@@ -142,15 +114,14 @@ const Notification = () => {
             items.map(async (item, index) => {
                 await newWorksheet.addRow([
                     dayjs(item.timestamp).format('DD/MM/YYYY HH:mm'),
+                    item.code,
+                    item.company,
                     item.firstName,
                     item.lastName,
                     item.email,
                     item.phoneNumber,
                     item.status
                 ]);
-                newWorksheet.getRow(index + 2).alignment = { vertical: 'middle', horizontal: 'center' }
-                newWorksheet.columns[16].width = 20;
-                newWorksheet.getRow(index + 2).alignment = { vertical: 'middle', horizontal: 'center' }
             })
         );
         await newWorkbook.xlsx.writeBuffer({ useStyles: true }).then(data => {
@@ -167,16 +138,16 @@ const Notification = () => {
         pageLoading[1](false)
     }
 
-    const saveHandler = async (value, id) => {
+    const saveHandler = async (value, code) => {
         pageLoading[1](true)
-        let res = await api(`/api/utils/redeem`, {
-            id,
+        let res = await api(`/api/utils/registrations`, {
+            code,
             ...value
         }, 'patch')
         pageLoading[1](false)
         notify.push(res.resCode === '200' ? 'อัพเดทข้อมูลสำเร็จ' : 'อัพเดทข้อมูลไม่สำเร็จ', res.resCode === '200' ? 'success' : 'error')
         if (res.resCode === '200') {
-            setItems(curr => curr.map(i => i.id === id ? ({ ...i, ...value }) : i))
+            setItems(curr => curr.map(i => i.code === code ? ({ ...i, ...value }) : i))
         }
     }
 
@@ -268,13 +239,17 @@ const Notification = () => {
                             ]}
                             itemHeight={30}
                             onClick={async (detail, value, e) => {
-                                let _items = selectedItems?.map(i => ({ id: i, status: value }))
+                                let _items = selectedItems?.map(i => ({ code: i, status: value }))
                                 pageLoading[1](true)
-                                let res = await api(`/api/utils/redeem/status`, _items, 'patch')
+                                let responses = await Promise.all(_items.map(async i => {
+                                    return await api(`/api/utils/registrations`, {
+                                        ...i
+                                    }, 'patch')
+                                }))
                                 pageLoading[1](false)
-                                notify.push(res.resCode === '200' ? 'อัพเดทสถานะสำเร็จ' : 'อัพเดทสถานะไม่สำเร็จ', res.resCode === '200' ? 'success' : 'error')
-                                if (res.resCode === '200') {
-                                    setItems(curr => curr.map(i => selectedItems.includes(i.id) ? ({ ...i, status: value }) : i))
+                                notify.push(responses.every(res => res.resCode === '200') ? 'อัพเดทสถานะสำเร็จ' : 'อัพเดทสถานะไม่สำเร็จ', responses.every(res => res.resCode === '200') ? 'success' : 'error')
+                                if (responses.every(res => res.resCode === '200')) {
+                                    setItems(curr => curr.map(i => selectedItems.includes(i.code) ? ({ ...i, status: value }) : i))
                                     tableRef.current?.clearCheckbox()
                                 }
                             }}
@@ -300,8 +275,8 @@ const Notification = () => {
                                 data={[items, null]}
                                 showCheckbox={true}
                                 noDataLabel={loading ? 'Loading...' : items.length === 0 ? 'No data' : ''}
-                                dataKey="id"
-                                itemClassName={i => { return `${styles.item} ${currentImageUrl[0]?.id === i.id ? styles.selected : ''}` }}
+                                dataKey="code"
+                                itemClassName={i => { return `${styles.item} ${selectedItems.includes(i.code) ? styles.selected : ''}` }}
                                 onSelect={e => setSelectedItems(e.map(i => i.id))}
                                 sortKeys={[
                                     'timestamp',
@@ -315,7 +290,6 @@ const Notification = () => {
                                 ]}
                                 onSorting={(value) => {
                                     setSorting(value?.sortOf ? [`${value?.key}:${value?.sortOf}`] : [])
-                                    setSortingLabel(value?.label || '')
                                     setItems([])
                                     pageMap[1]({})
                                     setFilter(draft => {
@@ -350,39 +324,39 @@ const Notification = () => {
                                         <span>{dayjs(item.timestamp).format('DD/MM/YYYY HH:mm')}</span>,
                                         <span>{item.code}</span>,
                                         <FieldEditor
-                                            id={`company.${item.id}`}
-                                            name={`company.${item.id}`}
+                                            id={`company.${item.code}`}
+                                            name={`company.${item.code}`}
                                             defaultValue={item.company || ''}
                                             type={'text'}
-                                            saveHandler={async value => { await saveHandler(value, item.id) }}
+                                            saveHandler={async value => { await saveHandler(value, item.code) }}
                                         />,
                                         <FieldEditor
-                                            id={`firstName.${item.id}`}
-                                            name={`firstName.${item.id}`}
+                                            id={`firstName.${item.code}`}
+                                            name={`firstName.${item.code}`}
                                             defaultValue={item.firstName || ''}
                                             type={'text'}
-                                            saveHandler={async value => { await saveHandler(value, item.id) }}
+                                            saveHandler={async value => { await saveHandler(value, item.code) }}
                                         />,
                                         <FieldEditor
-                                            id={`lastName.${item.id}`}
-                                            name={`lastName.${item.id}`}
+                                            id={`lastName.${item.code}`}
+                                            name={`lastName.${item.code}`}
                                             defaultValue={item.lastName || ''}
                                             type={'text'}
-                                            saveHandler={async value => { await saveHandler(value, item.id) }}
+                                            saveHandler={async value => { await saveHandler(value, item.code) }}
                                         />,
                                         <FieldEditor
-                                            id={`email.${item.id}`}
-                                            name={`email.${item.id}`}
+                                            id={`email.${item.code}`}
+                                            name={`email.${item.code}`}
                                             defaultValue={item.email || ''}
                                             type={'email'}
-                                            saveHandler={async value => { await saveHandler(value, item.id) }}
+                                            saveHandler={async value => { await saveHandler(value, item.code) }}
                                         />,
                                         <FieldEditor
-                                            id={`phoneNumber.${item.id}`}
-                                            name={`phoneNumber.${item.id}`}
+                                            id={`phoneNumber.${item.code}`}
+                                            name={`phoneNumber.${item.code}`}
                                             defaultValue={item.phoneNumber || ''}
                                             type={'text'}
-                                            saveHandler={async value => { await saveHandler(value, item.id) }}
+                                            saveHandler={async value => { await saveHandler(value, item.code) }}
                                             autoComplete="off"
                                             inputMode='numeric'
                                             onChange={e => {

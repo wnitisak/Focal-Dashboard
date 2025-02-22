@@ -8,6 +8,7 @@ import { Layout } from '../Layout';
 
 const MyApp = ({ Component, pageProps }) => {
     const pageLoading = useState<boolean>(true)
+    const initialLoading = useState<boolean>(true)
 
     return (
         <>
@@ -18,7 +19,7 @@ const MyApp = ({ Component, pageProps }) => {
                 <div id='overlay' />
                 <div id='loading' />
                 <LoadingPage active={pageLoading[0]} />
-                <App pageLoading={pageLoading}>
+                <App pageLoading={pageLoading} initialLoading={initialLoading}>
                     <Layout>
                         <Component {...pageProps} />
                     </Layout>

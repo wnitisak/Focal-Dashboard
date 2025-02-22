@@ -1,12 +1,10 @@
-import AppContext from 'contexts/App.context'
-import { forwardRef, useContext, useImperativeHandle, useRef, useState } from 'react'
+import { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
 import styles from './Notify.module.sass'
 const timeout = ms => new Promise(res => setTimeout(res, ms))
 
 
-export const Notify = forwardRef(({ }: any, ref: any) => {
-    const { credentials } = useContext(AppContext)
+export const Notify = forwardRef(({ initialLoading }: any, ref: any) => {
     const isActive = useRef(false)
     const timeoutRef = useRef<NodeJS.Timeout>()
     const [label, setLabel] = useState('')
@@ -36,7 +34,7 @@ export const Notify = forwardRef(({ }: any, ref: any) => {
             }, desc ? 7000 : 4000);
         }
     }))
-    return credentials ? ReactDOM.createPortal(
+    return !initialLoading ? ReactDOM.createPortal(
         <div ref={notifyRef} className={`${styles.notify} ${styles[style]}`}>
             <div style={{ alignItems: 'center', justifyContent: 'center' }}>
                 <i aria-hidden className={`fas fa-${style === 'error' ? 'exclamation-circle' : 'check-circle'}`}></i>

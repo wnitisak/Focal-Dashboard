@@ -1,54 +1,59 @@
 @font-face
-    font-family: 'Iconnic'
-    src: url('../fonts/FC Iconic/FC Iconic Regular.ttf') format('truetype')
+    font-family: 'Poppins Black'
+    src: url('../fonts/Poppins-Black.ttf') format('truetype'),
+    font-weight: 900
+    font-style: normal
+    font-display: swap
+
+@font-face
+    font-family: 'Poppins Light'
+    src: url('../fonts/Poppins-Light.ttf') format('truetype'),
+    font-weight: 300
+    font-style: normal
+    font-display: swap
+
+@font-face
+    font-family: 'Poppins Regular'
+    src: url('../fonts/Poppins-Regular.ttf') format('truetype'),
+    font-weight: 300
+    font-style: normal
+    font-display: swap
+
+@font-face
+    font-family: 'LINESeedSansTH'
+    src: url('../fonts/LINESeedSansTH_Rg.ttf') format('truetype')
     font-weight: normal
     font-style: normal
-    unicode-range: U+0E00-0E7F
+    font-display: swap
 
-@font-face
-    font-family: 'Iconnic'
-    src: url('../fonts/FC Iconic/FC Iconic Bold.ttf') format('truetype')
-    font-weight: bold
-    font-style: normal
-    unicode-range: U+0E00-0E7F
+:root
+    --font-headlines: 'Poppins Black'
+    --font-body: 'Poppins Regular'
+    --font-numbers: 'LINESeedSansTH'
 
-@font-face
-    font-family: 'DBGillSiam'
-    src: url('../fonts/DB Gill Siam/DB Gill Siam X v3.2.ttf') format('truetype')
-    font-weight: normal
-    font-style: normal
+h1, h2, h3, h4, h5, h6
+    font-family: var(--font-headlines)
 
-@font-face
-    font-family: 'DBGillSiam'
-    src: url('../fonts/DB Gill Siam/DB Gill Siam X Bd v3.2.ttf') format('truetype')
-    font-weight: bold
-    font-style: normal
+p, span, a, div, input, select, label, li
+    font-family: var(--font-body)
 
-html,body,button,input,select, textarea, h1,h2,p, tspan
-    font-family: 'DBGillSiam', 'Iconnic' !important
-    font-weight: 100
-    color: #090909
-    font-size: 20px
-    @media screen and ( max-width: 650px )
-        font-size: 20px
-tspan
-        font-size: 16px
-h1,h2,p
-    margin: 0 0
-    font-weight: bold
-    line-height: 1.5em
-    // letter-spacing: -0.01em
-h1
-    font-size: 7.8vw
-h2
-    display: flex
-    align-items: center
-    justify-content: center
-    font-size: 2.6vw
-    // font-size: 2.0vw
-@media screen and ( max-width: 550px )
-    h2
-        font-size: 3.5vw
+.numeric
+    font-family: var(--font-numbers)
+
+.headline-font
+    font-family: var(--font-headlines)
+
+.body-font
+    font-family: var(--font-body)
+
+input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner-spin-button
+    appearance: none
+    -moz-appearance: none
+.number-font, input[type=number]
+    font-family: var(--font-numbers)
+    font-variant-numeric: tabular-nums
+    font-feature-settings: "tnum" 1
+
 ::-webkit-scrollbar
     width: 4px !important
     height: 4px !important

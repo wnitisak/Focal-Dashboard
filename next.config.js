@@ -17,8 +17,8 @@ module.exports = {
     return [
       {
         source: "/api/utils/:path*",
-        destination: `https://szpf8kygnk.execute-api.ap-southeast-1.amazonaws.com/prod/:path*`,
-      },
+        destination: `https://kylphlxtt5.execute-api.ap-southeast-1.amazonaws.com/prod/:path*`,
+      }
     ];
   },
 }
