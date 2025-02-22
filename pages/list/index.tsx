@@ -205,6 +205,7 @@ const Notification = () => {
                         options={[
                             { title: 'All', value: 'all' },
                             { title: 'Pending', value: 'pending' },
+                            { title: 'Review', value: 'review' },
                             { title: 'Approved', value: 'approved' },
                             { title: 'Rejected', value: 'rejected' }
                         ]}

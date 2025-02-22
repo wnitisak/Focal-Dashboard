@@ -34,8 +34,8 @@ const Pagination = ({ className, totalPage = 0, page, onChange, disableNext }: P
             <input
                 type="number"
                 value={page}
-                disabled
                 className={styles.pageInput}
+                disabled
                 min={1}
                 max={totalPage || 1}
             />
@@ -47,7 +47,7 @@ const Pagination = ({ className, totalPage = 0, page, onChange, disableNext }: P
             >
                 <i aria-hidden className="fa-solid fa-chevron-right"></i>
             </button>
-            <span className={styles.pageInfo}>
+            <span className={styles.pageInfo} style={{ fontSize: '0.9rem' }}>
                 {totalPage || '-'} Pages
             </span>
         </div>
