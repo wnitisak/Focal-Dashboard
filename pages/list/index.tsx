@@ -158,7 +158,7 @@ const Notification = () => {
                     <p className={styles.title}>
                         Register List
                     </p>
-                    <span style={{ paddingLeft: '10px', minWidth: 'fit-content', color: '#666666' }}>({totalHits[0] ? totalHits[0]?.toLocaleString(undefined) : '-'} รายการ)</span>
+                    <span style={{ paddingLeft: '10px', minWidth: 'fit-content', color: '#aaaaaa' }}>({totalHits[0] ? totalHits[0]?.toLocaleString(undefined) : '-'} รายการ)</span>
                 </div>
                 <button className={styles.exportButton} onClick={exportHandler}>
                     <i className="fa-solid fa-download"></i>
@@ -180,7 +180,7 @@ const Notification = () => {
                     />
                 </div>
                 <div className={styles.filter}>
-                    <span style={{ color: '#0C2756', fontSize: '0.8rem' }}>Register Date</span>
+                    <span style={{ color: '#ffffff', fontSize: '0.8rem' }}>Register Date</span>
                     <DateRangePicker
                         ref={orderDatePickerRef}
                         rangeDate={rangeDate}
@@ -198,7 +198,7 @@ const Notification = () => {
                         }}
                         setRangeDate={setRangeDate}
                     />
-                    <span style={{ color: '#0C2756', marginLeft: '20px', fontSize: '0.8rem' }}>Status</span>
+                    <span style={{ color: '#ffffff', marginLeft: '20px', fontSize: '0.8rem' }}>Status</span>
                     <Selector
                         className={styles.selector}
                         defaultValue={filter.status}
@@ -217,7 +217,7 @@ const Notification = () => {
                         }}
                     />
                     {(filter.status !== 'all' || filter.startDate || filter.endDate) &&
-                        <span style={{ color: '#666666', marginLeft: '20px', fontSize: '0.85rem', textDecoration: 'underline', cursor: 'pointer' }} onClick={clearFilter}>ล้างตัวกรอง</span>
+                        <span style={{ color: '#ffffff', marginLeft: '20px', fontSize: '0.85rem', textDecoration: 'underline', cursor: 'pointer' }} onClick={clearFilter}>ล้างตัวกรอง</span>
                     }
                     <div style={{ flex: '1 1' }} />
                     <span style={{ color: '#888888', fontSize: '0.8rem' }}>{selectedItems.length || 0} of {items.length} selected</span>
@@ -227,7 +227,7 @@ const Notification = () => {
                                 <button
                                     className={styles.searchButton}
                                     disabled={selectedItems.length === 0}
-                                    style={{ color: '#0C2756' }}
+                                    style={{ color: '#35FEAC' }}
                                 >
                                     Action
                                 </button>
@@ -235,7 +235,8 @@ const Notification = () => {
                             items={[
                                 { value: 'APPROVED', detail: { alias: 'Approved' } },
                                 { value: 'REJECTED', detail: { alias: 'Rejected' } },
-                                { value: 'PENDING', detail: { alias: 'Pending' } }
+                                { value: 'REVIEW', detail: { alias: 'REVIEW' } },
+                                { value: 'PENDING', detail: { alias: 'PENDING' } }
                             ]}
                             itemHeight={30}
                             onClick={async (detail, value, e) => {
@@ -364,7 +365,7 @@ const Notification = () => {
                                                 e.target.value = _numbers.filter((i, index) => !isNaN(+i)).join('')
                                             }}
                                         />,
-                                        <span style={{ padding: '0px 7px', borderRadius: '20px', background: `${item.status === 'PENDING' ? '#888888' : item.status === 'REJECTED' ? '#ee6a6a' : '#4AA785'}`, color: '#ffffff', display: 'flex', alignItems: 'center', textTransform: 'capitalize' }}>
+                                        <span style={{ padding: '0px 7px', borderRadius: '20px', background: `${item.status === 'REVIEW' ? '#888888' : item.status === 'REJECTED' ? '#ee6a6a' : item.status === 'PENDING' ? 'none' : '#4AA785'}`, color: '#ffffff', display: 'flex', alignItems: 'center', textTransform: 'capitalize' }}>
                                             <i aria-hidden className="fa-solid fa-circle" style={{ color: '#ffffff', padding: '0 5px 0 0', fontSize: '7px' }}></i>
                                             {item.status}
                                         </span>

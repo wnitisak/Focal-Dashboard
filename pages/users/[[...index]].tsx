@@ -38,15 +38,8 @@ const Users = () => {
                 </div >
             }
         >
-            <div style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center', padding: '50px 10px 10px' }}>
                 <OrganizationProfile
-                    appearance={{
-                        elements: {
-                            profileSection__organizationDanger: {
-                                display: "none"
-                            }
-                        }
-                    }}
                 />
             </div>
         </Protect >

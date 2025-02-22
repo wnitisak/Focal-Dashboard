@@ -13,6 +13,7 @@
     "@aws-sdk/lib-storage": "^3.637.0",
     "@aws-sdk/s3-request-presigner": "^3.635.0",
     "@clerk/nextjs": "^5.4.1",
+    "@clerk/themes": "^2.2.19",
     "aws-sdk": "^2.842.0",
     "axios": "^0.27.2",
     "dayjs": "^1.11.3",

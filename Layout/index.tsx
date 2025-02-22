@@ -33,7 +33,7 @@ export const Layout = ({ children }) => {
                         >
                             <i aria-hidden className={`fa-solid fa-bars ${styles.navButton}`} onClick={e => { navBar[1](true) }}></i>
                             <ul className={`${styles.navBars} ${navBar[0] ? styles.show : styles.hide}`}>
-                                <img src="/focal_logo.png" />
+                                <img src="/focal.png" />
                                 {/* <li className={router.asPath.includes('/dashboard') ? styles.active : ''}
                                     onClick={(e) => {
                                         e.stopPropagation()

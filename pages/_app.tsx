@@ -1,4 +1,5 @@
 import { ClerkProvider } from "@clerk/nextjs";
+import { dark } from "@clerk/themes";
 import LoadingPage from "Layout/LoadingPage";
 import Head from "next/head";
 import App from "provider/App";
@@ -15,7 +16,11 @@ const MyApp = ({ Component, pageProps }) => {
             <Head>
                 <title>Focal Dashboard</title>
             </Head>
-            <ClerkProvider>
+            <ClerkProvider
+                appearance={{
+                    baseTheme: dark,
+                }}
+            >
                 <div id='overlay' />
                 <div id='loading' />
                 <LoadingPage active={pageLoading[0]} />

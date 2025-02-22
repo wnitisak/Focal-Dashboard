@@ -54,9 +54,9 @@ const DateRangePicker = forwardRef(({ style, onChange, setFocus, focus, rangeDat
             {!hideInput &&
                 <div style={style ? style : {}} ref={inputRef} onMouseDown={onMouseDownHandler} className={styles.date_picker}>
                     <div className={styles.info}>
-                        <div style={{ flex: '1 1', justifyContent: 'center', alignItems: 'center' }}><i aria-hidden className="far fa-calendar" /> <span style={{ flex: '1 1', color: !rangeDate[0] && '#ddd', minWidth: 'fit-content', fontSize: '0.85rem' }}>{rangeDate[0] ? formatDate(rangeDate[0]) : 'Select'}</span></div>
+                        <div style={{ flex: '1 1', justifyContent: 'center', alignItems: 'center' }}><i aria-hidden className="far fa-calendar" /> <span style={{ flex: '1 1', color: !rangeDate[0] && '#010101', minWidth: 'fit-content', fontSize: '0.85rem' }}>{rangeDate[0] ? formatDate(rangeDate[0]) : 'Select'}</span></div>
                         <div className={styles.line} />
-                        <div style={{ flex: '1 1', justifyContent: 'center', alignItems: 'center' }}><i aria-hidden className="far fa-calendar" /><span style={{ flex: '1 1', color: !rangeDate[1] && '#ddd', minWidth: 'fit-content', fontSize: '0.85rem' }}>{rangeDate[1] ? formatDate(rangeDate[1]) : 'Select'}</span></div>
+                        <div style={{ flex: '1 1', justifyContent: 'center', alignItems: 'center' }}><i aria-hidden className="far fa-calendar" /><span style={{ flex: '1 1', color: !rangeDate[1] && '#010101', minWidth: 'fit-content', fontSize: '0.85rem' }}>{rangeDate[1] ? formatDate(rangeDate[1]) : 'Select'}</span></div>
                     </div>
                 </div>
             }

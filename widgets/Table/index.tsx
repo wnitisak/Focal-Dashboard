@@ -158,8 +158,8 @@ const Table = forwardRef(({ sortKeys, onSorting, showCheckbox, isMultiChecked = 
                                 {header}
                                 {sortKeys?.[index] &&
                                     <div style={{ flexDirection: 'column', justifyContent: 'flex-start', padding: '0 0 0 5px' }}>
-                                        <i aria-hidden className="fas fa-caret-up" style={{ fontSize: '12px', height: '7px', display: 'flex', alignItems: 'center', color: sorting?.key === sortKeys[index] && sorting?.sortOf === 'asc' ? '#888888' : '#dddddd' }} ></i>
-                                        <i aria-hidden className="fas fa-caret-down" style={{ fontSize: '12px', height: '7px', display: 'flex', alignItems: 'center', color: sorting?.key === sortKeys[index] && sorting?.sortOf === 'desc' ? '#888888' : '#dddddd' }} ></i>
+                                        <i aria-hidden className="fas fa-caret-up" style={{ fontSize: '12px', height: '7px', display: 'flex', alignItems: 'center', color: sorting?.key === sortKeys[index] && sorting?.sortOf === 'asc' ? '#aaaaaa' : '#444444' }} ></i>
+                                        <i aria-hidden className="fas fa-caret-down" style={{ fontSize: '12px', height: '7px', display: 'flex', alignItems: 'center', color: sorting?.key === sortKeys[index] && sorting?.sortOf === 'desc' ? '#aaaaaa' : '#444444' }} ></i>
                                     </div>
                                 }
                             </span>
@@ -192,7 +192,7 @@ const Table = forwardRef(({ sortKeys, onSorting, showCheckbox, isMultiChecked = 
                             )}
                         </>
                         :
-                        <div className={`${styles.row} ${itemClassName || ''}`} style={{ backgroundColor: '#ffffff', padding: '5px 0', justifyContent: 'center', alignItems: 'center', color: '#777', border: 'none', fontSize: '0.9rem' }}>{noDataLabel || 'No Data'}</div>
+                        <div className={`${styles.row} ${itemClassName || ''}`} style={{ backgroundColor: 'none', padding: '5px 0', justifyContent: 'center', alignItems: 'center', color: '#777', border: 'none', fontSize: '0.9rem' }}>{noDataLabel || 'No Data'}</div>
                     }
                 </div>
             </div>

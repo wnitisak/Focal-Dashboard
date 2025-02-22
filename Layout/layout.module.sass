@@ -2,6 +2,7 @@
     display: flex
     height: 100dvh
     width: 100vw
+    background: #010101
     flex-direction: column
     position: relative
     .header
@@ -10,7 +11,7 @@
         right: 10px
         z-index: 1000
     .component
-        padding: 35px 10px 10px
+        padding: 10px 10px 10px
         height: 100%
         width: 100%
         overflow: auto
@@ -41,7 +42,7 @@
             left: 10px
             top: 10px
             font-size: 20px
-            color: #0C2756
+            color: #ffffff
             border-radius: 50%
             padding: 10px
             width: 30px
@@ -51,9 +52,10 @@
             align-items: center
             &:hover
                 background: #e4e4e4
+                color: #010101
         .navBars
             position: absolute
-            background: #ffffff
+            background: #010101
             z-index: 10000
             width: 250px
             height: 100%
@@ -80,7 +82,7 @@
                 font-size: 0.9rem
                 margin-top: 7px
                 cursor: pointer
-                color: #444444
+                color: #ffffff
                 i
                     font-size: 17px
                     width: 30px
@@ -88,9 +90,9 @@
                 &:active
                     transform: scale(0.98)
                 &.active
-                    background: #0C275633 !important
+                    background: #ffffff17 !important
                 &:hover
-                    background: #0c275613
+                    background: #ffffff17
             &.show
                 transform: translateX(0)
             &.hide
