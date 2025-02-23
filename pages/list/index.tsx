@@ -158,7 +158,7 @@ const Notification = () => {
         pageLoading[1](true)
         let res = await api(`/api/utils/registrations?code=${atob(code)}`)
         pageLoading[1](false)
-        let data = res?.data || totalItems[0].find(i => i.code === atob(code))
+        let data = res?.data?.[0]
         if (!data) return notify.push('ไม่พบข้อมูลบัตร', 'error')
         if (data?.status === 'REJECTED') return notify.push('บัตรนี้ถูกปฏิเสธแล้ว', 'error')
         if (data?.status === 'REVIEW') return notify.push('บัตรนี้อยู่ในสถานะรอตรวจสอบ', 'error')
