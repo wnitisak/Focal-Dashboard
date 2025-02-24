@@ -104,6 +104,7 @@ const Notification = () => {
         newWorksheet.addRow([
             'Register Date',
             'Code',
+            'Guest Of',
             'Company',
             'First name',
             'Last name',
@@ -117,6 +118,7 @@ const Notification = () => {
                 await newWorksheet.addRow([
                     dayjs(item.timestamp).format('DD/MM/YYYY HH:mm'),
                     item.code,
+                    item.guestOf,
                     item.company,
                     item.firstName,
                     item.lastName,
@@ -314,6 +316,7 @@ const Notification = () => {
                                 sortKeys={[
                                     'timestamp',
                                     'code',
+                                    'guestOf',
                                     'company',
                                     'firstName',
                                     'lastName',
@@ -333,6 +336,7 @@ const Notification = () => {
                                 headers={[
                                     'Register Date',
                                     'Code',
+                                    'Guest Of',
                                     'Company',
                                     'First Name',
                                     'Last Name',
@@ -346,6 +350,7 @@ const Notification = () => {
                                     { minHeight: '30px', padding: '0 4px', alignItems: 'center', flex: '1 1 220px', justifyContent: 'flex-start', textAlign: 'start' },
                                     { minHeight: '30px', padding: '0 4px', alignItems: 'center', flex: '1 1 220px', justifyContent: 'flex-start', textAlign: 'start' },
                                     { minHeight: '30px', padding: '0 4px', alignItems: 'center', flex: '1 1 220px', justifyContent: 'flex-start', textAlign: 'start' },
+                                    { minHeight: '30px', padding: '0 4px', alignItems: 'center', flex: '1 1 220px', justifyContent: 'flex-start', textAlign: 'start' },
                                     { minHeight: '30px', padding: '0 4px', alignItems: 'center', flex: '1 1 350px', justifyContent: 'flex-start', textAlign: 'start' },
                                     { minHeight: '30px', padding: '0 4px', alignItems: 'center', flex: '1 1 170px', justifyContent: 'flex-start', textAlign: 'start' },
                                     { minHeight: '30px', alignItems: 'center', flex: '1 1 100px', minWidth: '100px', maxWidth: '110px', justifyContent: 'center', textAlign: 'center' }
@@ -356,6 +361,13 @@ const Notification = () => {
                                     return [
                                         <span>{dayjs(item.timestamp).format('DD/MM/YYYY HH:mm')}</span>,
                                         <span>{item.code}</span>,
+                                        <FieldEditor
+                                            id={`guestOf.${item.code}`}
+                                            name={`guestOf.${item.code}`}
+                                            defaultValue={item.guestOf || ''}
+                                            type={'text'}
+                                            saveHandler={async value => { await saveHandler(value, item.code) }}
+                                        />,
                                         <FieldEditor
                                             id={`company.${item.code}`}
                                             name={`company.${item.code}`}
