@@ -266,8 +266,8 @@ const Notification = () => {
                                     </button>
                                 )}
                                 items={[
-                                    { value: 'APPROVED', detail: { alias: 'Approved' } },
-                                    { value: 'REJECTED', detail: { alias: 'Rejected' } },
+                                    { value: 'APPROVED', detail: { alias: 'APPROVED' } },
+                                    { value: 'REJECTED', detail: { alias: 'REJECTED' } },
                                     { value: 'REVIEW', detail: { alias: 'REVIEW' } },
                                     { value: 'PENDING', detail: { alias: 'PENDING' } }
                                 ]}
