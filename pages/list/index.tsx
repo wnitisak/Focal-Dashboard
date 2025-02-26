@@ -393,7 +393,7 @@ const Notification = () => {
                                             id={`email.${item.code}`}
                                             name={`email.${item.code}`}
                                             defaultValue={item.email || ''}
-                                            type={'email'}
+                                            type={'text'}
                                             saveHandler={async value => { await saveHandler(value, item.code) }}
                                         />,
                                         <FieldEditor
@@ -402,12 +402,6 @@ const Notification = () => {
                                             defaultValue={item.phoneNumber || ''}
                                             type={'text'}
                                             saveHandler={async value => { await saveHandler(value, item.code) }}
-                                            autoComplete="off"
-                                            inputMode='numeric'
-                                            onChange={e => {
-                                                let _numbers = [...e.target.value]
-                                                e.target.value = _numbers.filter((i, index) => !isNaN(+i)).join('')
-                                            }}
                                         />,
                                         <span style={{ padding: '0px 7px', borderRadius: '20px', background: `${item.status === 'REVIEW' ? '#888888' : item.status === 'REJECTED' ? '#ee6a6a' : item.status === 'PENDING' ? 'none' : '#4AA785'}`, color: '#ffffff', display: 'flex', alignItems: 'center', textTransform: 'capitalize' }}>
                                             <i aria-hidden className="fa-solid fa-circle" style={{ color: '#ffffff', padding: '0 5px 0 0', fontSize: '7px' }}></i>
