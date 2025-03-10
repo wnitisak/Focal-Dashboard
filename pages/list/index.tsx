@@ -322,6 +322,7 @@ const Notification = () => {
                                     'lastName',
                                     'email',
                                     'phoneNumber',
+                                    'checkInTimestamp',
                                     'status'
                                 ]}
                                 onSorting={(value) => {
