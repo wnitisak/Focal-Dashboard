@@ -165,6 +165,7 @@ const Notification = () => {
         if (data?.status === 'REJECTED') return notify.push('บัตรนี้ถูกปฏิเสธแล้ว', 'error')
         if (data?.status === 'PENDING') return notify.push('บัตรนี้ยังไม่มีการลงทะเบียน', 'error')
         if (data?.status === 'REVIEW') return notify.push('บัตรนี้อยู่ในสถานะรอตรวจสอบ', 'error')
+        if ((data?.seatNumber || '-') === '-') return notify.push('ไม่พบเลขที่นั่งของบัตรนี้', 'error')
         if (!modalUserRef.current?.getActive()) modalUserRef.current?.open(data)
     }
 
