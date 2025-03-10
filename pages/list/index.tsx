@@ -163,6 +163,7 @@ const Notification = () => {
         let data = res?.data?.[0]
         if (!data) return notify.push('ไม่พบข้อมูลบัตร', 'error')
         if (data?.status === 'REJECTED') return notify.push('บัตรนี้ถูกปฏิเสธแล้ว', 'error')
+        if (data?.status === 'PENDING') return notify.push('บัตรนี้ยังไม่มีการลงทะเบียน', 'error')
         if (data?.status === 'REVIEW') return notify.push('บัตรนี้อยู่ในสถานะรอตรวจสอบ', 'error')
         if (!modalUserRef.current?.getActive()) modalUserRef.current?.open(data)
     }
@@ -259,7 +260,7 @@ const Notification = () => {
                                 button={(
                                     <button
                                         className={styles.searchButton}
-                                        disabled={selectedItems.length === 0}
+                                        disabled={selectedItems.length === 0 || selectedItems.some(i => items.find(_i => _i.code === i).status !== 'PENDING')}
                                         style={{ color: '#35FEAC' }}
                                     >
                                         Action
@@ -267,9 +268,7 @@ const Notification = () => {
                                 )}
                                 items={[
                                     { value: 'APPROVED', detail: { alias: 'APPROVED' } },
-                                    { value: 'REJECTED', detail: { alias: 'REJECTED' } },
-                                    { value: 'REVIEW', detail: { alias: 'REVIEW' } },
-                                    { value: 'PENDING', detail: { alias: 'PENDING' } }
+                                    { value: 'REJECTED', detail: { alias: 'REJECTED' } }
                                 ]}
                                 itemHeight={30}
                                 onClick={async (detail, value, e) => {
@@ -342,6 +341,7 @@ const Notification = () => {
                                     'Last Name',
                                     'Email',
                                     'Phone',
+                                    'Check-In Date',
                                     'Status'
                                 ]}
                                 template={[
@@ -353,6 +353,7 @@ const Notification = () => {
                                     { minHeight: '30px', padding: '0 4px', alignItems: 'center', flex: '1 1 220px', justifyContent: 'flex-start', textAlign: 'start' },
                                     { minHeight: '30px', padding: '0 4px', alignItems: 'center', flex: '1 1 350px', justifyContent: 'flex-start', textAlign: 'start' },
                                     { minHeight: '30px', padding: '0 4px', alignItems: 'center', flex: '1 1 170px', justifyContent: 'flex-start', textAlign: 'start' },
+                                    { minHeight: '30px', alignItems: 'center', flex: '0 0 115px', maxWidth: '115px', justifyContent: 'start', textAlign: 'start' },
                                     { minHeight: '30px', alignItems: 'center', flex: '1 1 100px', minWidth: '100px', maxWidth: '110px', justifyContent: 'center', textAlign: 'center' }
                                 ]}
                                 addButtonAlias=''
@@ -403,6 +404,7 @@ const Notification = () => {
                                             type={'text'}
                                             saveHandler={async value => { await saveHandler(value, item.code) }}
                                         />,
+                                        <span>{dayjs(item.checkInTimestamp).format('DD/MM/YYYY HH:mm')}</span>,
                                         <span style={{ padding: '0px 7px', borderRadius: '20px', background: `${item.status === 'REVIEW' ? '#888888' : item.status === 'REJECTED' ? '#ee6a6a' : item.status === 'PENDING' ? 'none' : '#4AA785'}`, color: '#ffffff', display: 'flex', alignItems: 'center', textTransform: 'capitalize' }}>
                                             <i aria-hidden className="fa-solid fa-circle" style={{ color: '#ffffff', padding: '0 5px 0 0', fontSize: '7px' }}></i>
                                             {item.status}

@@ -1,5 +1,6 @@
 import Field from 'components/Field'
 import AppContext from 'contexts/App.context'
+import dayjs from 'dayjs'
 import { forwardRef, useCallback, useContext, useEffect, useImperativeHandle, useRef, useState } from 'react'
 import ReactDOM from 'react-dom'
 import { api } from 'utils/general'
@@ -47,7 +48,8 @@ const ModalUser = forwardRef(({ onClose }: Props, ref) => {
         pageLoading[1](true)
         let res = await api(`/api/utils/registrations`, {
             code: currentData[0]?.code,
-            status: 'CHECKED_IN'
+            status: 'CHECK_IN',
+            checkInTimestamp: dayjs().valueOf()
         }, 'patch')
         pageLoading[1](false)
         notify.push(res.resCode === '200' ? 'CheckIn สำเร็จ' : 'CheckIn ไม่สำเร็จ', res.resCode === '200' ? 'success' : 'error')
