@@ -323,6 +323,7 @@ const Notification = () => {
                                     'lastName',
                                     'email',
                                     'phoneNumber',
+                                    'seatNumber',
                                     'checkInTimestamp',
                                     'status'
                                 ]}
@@ -344,6 +345,7 @@ const Notification = () => {
                                     'Last Name',
                                     'Email',
                                     'Phone',
+                                    'Seat Number',
                                     'Check-In Date',
                                     'Status'
                                 ]}
@@ -355,6 +357,7 @@ const Notification = () => {
                                     { minHeight: '30px', padding: '0 4px', alignItems: 'center', flex: '1 1 220px', justifyContent: 'flex-start', textAlign: 'start' },
                                     { minHeight: '30px', padding: '0 4px', alignItems: 'center', flex: '1 1 220px', justifyContent: 'flex-start', textAlign: 'start' },
                                     { minHeight: '30px', padding: '0 4px', alignItems: 'center', flex: '1 1 350px', justifyContent: 'flex-start', textAlign: 'start' },
+                                    { minHeight: '30px', padding: '0 4px', alignItems: 'center', flex: '1 1 170px', justifyContent: 'flex-start', textAlign: 'start' },
                                     { minHeight: '30px', padding: '0 4px', alignItems: 'center', flex: '1 1 170px', justifyContent: 'flex-start', textAlign: 'start' },
                                     { minHeight: '30px', alignItems: 'center', flex: '0 0 115px', maxWidth: '115px', justifyContent: 'start', textAlign: 'start' },
                                     { minHeight: '30px', alignItems: 'center', flex: '1 1 100px', minWidth: '100px', maxWidth: '110px', justifyContent: 'center', textAlign: 'center' }
@@ -404,6 +407,13 @@ const Notification = () => {
                                             id={`phoneNumber.${item.code}`}
                                             name={`phoneNumber.${item.code}`}
                                             defaultValue={item.phoneNumber || ''}
+                                            type={'text'}
+                                            saveHandler={async value => { await saveHandler(value, item.code) }}
+                                        />,
+                                        <FieldEditor
+                                            id={`seatNumber.${item.code}`}
+                                            name={`seatNumber.${item.code}`}
+                                            defaultValue={item.seatNumber || ''}
                                             type={'text'}
                                             saveHandler={async value => { await saveHandler(value, item.code) }}
                                         />,
