@@ -261,7 +261,7 @@ const Notification = () => {
                                 button={(
                                     <button
                                         className={styles.searchButton}
-                                        disabled={selectedItems.length === 0 || selectedItems.some(i => items.find(_i => _i.code === i).status !== 'PENDING')}
+                                        disabled={selectedItems.length === 0 || selectedItems.some(i => items.find(_i => _i.code === i).status === 'PENDING')}
                                         style={{ color: '#35FEAC' }}
                                     >
                                         Action
