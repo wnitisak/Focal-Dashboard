@@ -162,6 +162,7 @@ const Notification = () => {
         pageLoading[1](false)
         let data = res?.data?.[0]
         if (!data) return notify.push('ไม่พบข้อมูลบัตร', 'error')
+        if (data?.status === 'CHECK_IN') return notify.push('บัตรนี้เช็คอินแล้ว ไม่สามารถเช็คอินซ้ำได้', 'error')
         if (data?.status === 'REJECTED') return notify.push('บัตรนี้ถูกปฏิเสธแล้ว', 'error')
         if (data?.status === 'PENDING') return notify.push('บัตรนี้ยังไม่มีการลงทะเบียน', 'error')
         if (data?.status === 'REVIEW') return notify.push('บัตรนี้อยู่ในสถานะรอตรวจสอบ', 'error')
