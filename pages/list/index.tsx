@@ -366,7 +366,7 @@ const Notification = () => {
                                 isDeletable={false}
                                 contents={(item, index) => {
                                     return [
-                                        <span>{dayjs(item.timestamp).format('DD/MM/YYYY HH:mm')}</span>,
+                                        <span>{item.registeredTimestamp ? dayjs(item.registeredTimestamp).format('DD/MM/YYYY HH:mm') : '-'}</span>,
                                         <span>{item.code}</span>,
                                         <FieldEditor
                                             id={`guestOf.${item.code}`}
