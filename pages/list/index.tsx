@@ -49,31 +49,39 @@ const Notification = () => {
 
     const pageMap = useState<any>({})
 
+    const getList = async ({ status, page, startDate, endDate, sorting }: any) => {
+        tableRef.current?.clearCheckbox()
+        setLoading(true)
+        let res
+        let pages = 0
+        let hits = 0
+        let _items = await api(`/api/search`, {
+            page,
+            hitsPerPage: 100,
+            q: textSearch || '',
+            filter: [
+                ...((status && status !== 'all') ? [`status = ${status}`] : []),
+                ...(startDate ? [`registeredTimestamp ${startDate} TO ${endDate}`] : []),
+            ],
+            sort: sorting ? [sorting] : []
+        }, 'post')
+        hits = _items?.totalHits || 0
+        pages = _items?.totalPages
+        res = _items?.hits || []
+        if (filter.page > pages) setFilter(draft => { draft.page = pages })
+        totalHits[1](hits)
+        totalPage[1](pages)
+        setItems(res || [])
+        setSelectedItems([])
+        setLoading(false)
+    }
+
+
     useEffect(() => {
         router.replace({ pathname: '/list', query: { page: filter.page || 1 } });
         (async () => {
             setItems([])
-            setLoading(true)
-            let itemPerPage = 20
-            let _res = await api(`/api/utils/registrations`)
-            totalItems[1](_res?.data || [])
-            let _items = _res?.data || []
-            _items = _items.filter(i => filter.status === 'all' || i.status === filter.status.toUpperCase())
-            _items = _items.filter(i => !filter.startDate || (i.timestamp >= filter.startDate && i.timestamp <= filter.endDate))
-            _items = _items.filter(i => !textSearch || Object.values(i).some(v => v?.toString().toLowerCase().includes(textSearch.toLowerCase())))
-            _items = _items.sort((a, b) => {
-                let sorting = filter?.sorting || 'timestamp:desc'
-                let [key, order] = sorting.split(':')
-                if (a[key] < b[key]) return order === 'asc' ? -1 : 1
-                if (a[key] > b[key]) return order === 'asc' ? 1 : -1
-                return 0
-            })
-            setLoading(false)
-            setItems(_items.slice((filter.page - 1) * itemPerPage, filter.page * itemPerPage))
-            totalHits[1](_items.length)
-            let pages = Math.ceil(_items.length / itemPerPage)
-            totalPage[1](pages)
-            if (filter.page > pages) setFilter(draft => { draft.page = pages })
+            let res = await getList(filter)
         })()
     }, [filter, textSearch])
 
@@ -94,10 +102,17 @@ const Notification = () => {
     const exportHandler = async () => {
         let items = []
         pageLoading[1](true)
-        let _res = await api(`/api/utils/registrations`)
-        items = _res?.data || []
-        items = items.filter(i => filter.status === 'all' || i.status === filter.status.toUpperCase())
-        items = items.filter(i => !filter.startDate || (i.timestamp >= filter.startDate && i.timestamp <= filter.endDate))
+        let res = await api(`/api/search`, {
+            page: 1,
+            q: textSearch || '',
+            hitsPerPage: 10000,
+            filter: [
+                ...((filter.status && filter.status !== 'all') ? [`status = ${filter.status}`] : []),
+                ...(filter.startDate ? [`registeredTimestamp ${filter.startDate} TO ${filter.endDate}`] : []),
+            ],
+            sort: filter.sorting ? [filter.sorting] : []
+        }, 'post')
+        items = res?.hits || []
         const ExcelJs = require('exceljs')
         let newWorkbook = new ExcelJs.Workbook();
         let newWorksheet = newWorkbook.addWorksheet("Sheet1");
@@ -106,17 +121,19 @@ const Notification = () => {
             'Code',
             'Guest Of',
             'Company',
-            'First name',
-            'Last name',
+            'First Name',
+            'Last Name',
             'Email',
             'Phone',
+            'Seat Number',
+            'Check-In Date',
             'Status'
         ]);
         newWorksheet.getRow(1).alignment = { vertical: 'middle', horizontal: 'center' }
         await Promise.all(
             items.map(async (item, index) => {
                 await newWorksheet.addRow([
-                    dayjs(item.timestamp).format('DD/MM/YYYY HH:mm'),
+                    dayjs(item.registeredTimestamp).format('DD/MM/YYYY HH:mm'),
                     item.code,
                     item.guestOf,
                     item.company,
@@ -124,6 +141,8 @@ const Notification = () => {
                     item.lastName,
                     item.email,
                     item.phoneNumber,
+                    item.seatNumber,
+                    dayjs(item.checkInTimestamp).format('DD/MM/YYYY HH:mm'),
                     item.status
                 ]);
             })
@@ -315,7 +334,7 @@ const Notification = () => {
                                 itemClassName={i => { return `${styles.item} ${selectedItems.includes(i.code) ? styles.selected : ''}` }}
                                 onSelect={e => setSelectedItems(e.map(i => i.id))}
                                 sortKeys={[
-                                    'timestamp',
+                                    'registeredTimestamp',
                                     'code',
                                     'guestOf',
                                     'company',

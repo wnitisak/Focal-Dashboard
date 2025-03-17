@@ -6,10 +6,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     const { index, offset = 0, company }: any = req.query
     let data = undefined
     try {
-        let url = `http://167.71.195.146/indexes/redeems/search`
+        let url = `http://157.245.146.38/indexes/registrations/search`
         let body = { ...req.body, offset: Number(offset) }
         let headers = {
-            'Authorization': `Bearer ZjY4M2E0Y2VkYWIyMDhmYjUzYmQ3MzY5`
+            'Authorization': `Bearer MzlhMTY0NDM0MTgwMjUwNGM5ZjQ5OThi`
         }
         // data = (await axios.post(url, body, { headers }))?.data
         data = await fetch(url, {
