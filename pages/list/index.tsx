@@ -63,7 +63,7 @@ const Notification = () => {
                 ...((status && status !== 'all') ? [`status = ${status}`] : []),
                 ...(startDate ? [`registeredTimestamp ${startDate} TO ${endDate}`] : []),
             ],
-            sort: sorting ? [sorting] : []
+            sort: sorting ? [sorting] : ['sequence:asc']
         }, 'post')
         hits = _items?.totalHits || 0
         pages = _items?.totalPages
@@ -110,7 +110,7 @@ const Notification = () => {
                 ...((filter.status && filter.status !== 'all') ? [`status = ${filter.status}`] : []),
                 ...(filter.startDate ? [`registeredTimestamp ${filter.startDate} TO ${filter.endDate}`] : []),
             ],
-            sort: filter.sorting ? [filter.sorting] : []
+            sort: filter.sorting ? [filter.sorting] : ["sequence:asc"]
         }, 'post')
         items = res?.hits || []
         const ExcelJs = require('exceljs')
